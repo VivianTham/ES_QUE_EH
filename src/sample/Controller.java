@@ -12,10 +12,8 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class Controller {
-      //connects scene builder fxml file to controller.java
-    //private Label myMessage; = new TextArea();
 
-    @FXML
+    @FXML   //connects scene builder fxml file to controller.java
     public TextArea messages_console;
     @FXML
     private TextField userInput;
@@ -59,25 +57,17 @@ public class Controller {
                 break;
             }
         }
-     //   return null;
     }
 
 
-
-    //pass an argument ActionEvent for javafx.event + give a name
     @FXML
     public void sendButton( ) {
 
-        //System.out.println(userInput.getText());
         String currentInput = userInput.getText();
         Main.client.sendOverConnection(currentInput);
-
+        userInput.setText("");
 
     }
-
-
-
-
 }
 
 
