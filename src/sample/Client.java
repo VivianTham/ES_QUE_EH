@@ -14,8 +14,9 @@ public class Client {
     private String server;
     private int port;
     String msg;
-    public static StringBuilder allMsg = new StringBuilder("");
 
+    //to use append, we use stringBuilder instead of string
+    public static StringBuilder allMsg = new StringBuilder("");
 
     public String getServer() {
         return server;
@@ -38,18 +39,13 @@ public class Client {
         this.port = port;
     }
 
-
-    //need to connect to server, read input then rest server settle
-    //user name set from iden function in connection
-
-    //
+    //connection to server starts here
     public boolean start() {
         // try to connect to the server
         try {
             socket = new Socket(server, port);
-        }
-        // exception handler if it failed
-        catch (Exception ec) {
+
+        } catch (Exception ec) {      // exception handler if it failed
 
             msg = "Error connecting to server:" + ec;
             allMsg.append(msg);
@@ -58,18 +54,19 @@ public class Client {
             return false;
         }
 
+        //reading input
         msg = "Connection accepted " + socket.getInetAddress() + ":" + socket.getPort();
         allMsg.append(msg);
         allMsg.append("\n");
         System.out.println(msg);
 
-        /* Creating both Data Stream */
+        //creating input and output data stream
         try {
             sInput = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             sOutput = new PrintWriter(socket.getOutputStream(), true);
 
         } catch (IOException eIO) {
-            msg = "Exception creating new I/O Streams: " + eIO;
+            msg = "Error creating new I/O Streams: " + eIO;
             allMsg.append(msg);
             allMsg.append("\n");
             System.out.println(msg);
@@ -77,30 +74,25 @@ public class Client {
             return false;
         }
 
-        //creates the Thread to listen from the server
+        //thread to listen from the server started here
         new ListenFromServer().start();
 
         return true;
     }
 
-
-//    private void display(String msg) {      //display message sent at console
-//
-//        System.out.println(msg);
-//    }
-    
+    //creating thread to connect with server
     class ListenFromServer extends Thread {
-        // to read and print message from input datastream
+        // to read and print message from input data stream
         public void run() {
             while (true) {
                 try {
-                    msg = (String) sInput.readLine();
+                    msg = sInput.readLine();
                     allMsg.append(msg);
                     allMsg.append("\n");
                     Main.mainController.messages_console.setText(allMsg.toString());
-                    //System.out.println(allMsg.toString());
+
                 } catch (IOException e) {
-                    msg = "Server has closed the connection: " + e;
+                    msg = "Server closed: " + e;
                     allMsg.append(msg);
                     allMsg.append("\n");
                     System.out.println(msg);
@@ -111,10 +103,12 @@ public class Client {
         }
     }
 
-
+    //this method gets information from user, send to server and server will handle it
     public static void sendOverConnection(String msg) {
+        //user's input is append to the end of previous one + a line break
         allMsg.append(msg);
         allMsg.append("\n");
+
         sOutput.println(msg);
     }
 
