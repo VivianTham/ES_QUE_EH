@@ -2,8 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Client/sample/Client$ListenFromServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Client/sample/Client$ListenFromServer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Client/sample/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Client/sample/Client.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Client/sample/Controller.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Client/sample/Controller.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Client/sample/Main$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Client/sample/Main$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Client/sample/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Client/sample/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Client/sample/sample.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Client/sample/sample.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/sample/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/sample/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Controller.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/sample/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Main.java" afterDir="false" />
@@ -105,7 +110,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="dynamic.classpath" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../g53sqm-chat-server/g53sqm-chat-server" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Documents/Vivian Tham/ER SoftwareQA-master" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -213,7 +218,14 @@
       <workItem from="1576228560547" duration="2483000" />
       <workItem from="1576238875575" duration="3076000" />
       <workItem from="1576244923386" duration="11432000" />
-      <workItem from="1576402252442" duration="8731000" />
+      <workItem from="1576402252442" duration="11850000" />
+      <workItem from="1576420023510" duration="3309000" />
+      <workItem from="1576482819579" duration="7897000" />
+      <workItem from="1576584942363" duration="13840000" />
+      <workItem from="1576681323124" duration="4344000" />
+      <workItem from="1576688554114" duration="3973000" />
+      <workItem from="1576737698665" duration="9053000" />
+      <workItem from="1576748556662" duration="2956000" />
     </task>
     <servers />
   </component>

@@ -49,6 +49,7 @@ public class Main extends Application {
         if (!client.start())
             return;
 
+        //closing client window quits the server connection
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {

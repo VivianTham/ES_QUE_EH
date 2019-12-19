@@ -10,7 +10,7 @@ public class Client {
     public static String display;
     private BufferedReader sInput;        // to read from the socket
     private static PrintWriter sOutput;        // to write on the socket
-    private Socket socket;                    // socket object
+    private static Socket socket;                    // socket object
     private String server;
     private int port;
     String msg;
@@ -34,6 +34,14 @@ public class Client {
         this.port = port;
     }
 
+    public static Socket getSocket(){
+        return socket;
+    }
+
+    public void setSocket(){
+        Client.socket = socket;
+    }
+
     Client(String server, int port) {
         this.server = server;
         this.port = port;
@@ -55,6 +63,7 @@ public class Client {
         }
 
         //reading input
+        Main.mainController.userInput.requestFocus();
         msg = "Connection accepted " + socket.getInetAddress() + ":" + socket.getPort();
         allMsg.append(msg);
         allMsg.append("\n");
@@ -113,4 +122,3 @@ public class Client {
     }
 
 }
-

@@ -1,26 +1,37 @@
 package sample;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextInputControl;
+import javafx.scene.input.KeyCode;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
+import java.io.IOException;
 
 public class Controller {
 
     @FXML   //connects scene builder fxml file to controller.java
     public TextArea messages_console;
     @FXML
-    private TextField userInput;
+    public TextArea userInput;
     @FXML
     private Button sendBtn;
 
     StringBuilder input = new StringBuilder("");
+
+
 //    private void createContent(ActionEvent event) {
 //
 //        //TextField input = new TextField();
@@ -49,7 +60,7 @@ public class Controller {
 //    }
 
 
-    private void textConsole(ActionEvent event) {
+    public void textConsole(ActionEvent event) {
         while (true) {
             if (Client.display != null) {
                 messages_console.setText(Client.display);
@@ -60,29 +71,51 @@ public class Controller {
     }
 
 
+
+//        else if (keyEvent.getCode() == KeyCode.SHIFT)
+//        {
+//            if (keyEvent.getCode() == KeyCode.ENTER)
+//            {
+//                StringBuilder sb = new StringBuilder("");
+//                sb.append(userInput.getText());
+//                sb.append(("\n"));
+//            }
+//          }
+
+//        if(keyEvent.getCode() == KeyCode.DOWN){
+//            String currentInput = userInput.getText();
+//        }
+
+
+//    @FXML
+//    public void nextLinebyShift(KeyEvent keyEvent)
+//    {
+//        if (keyEvent.getCode() == KeyCode.SHIFT)
+//        {
+//            if (keyEvent.getCode() == KeyCode.ENTER)
+//            {
+//                StringBuilder sb = new StringBuilder("");
+//                sb.append(userInput.getText());
+//                sb.append(("\n"));
+//                userInput.setText(sb.toString());
+//            }
+//        }
+//    }
+
     @FXML
-    public void sendButton( ) {
+    public void sendButton( ) throws IOException {
 
         String currentInput = userInput.getText();
+
+//        if(currentInput == "QUIT"){
+//            Client.getSocket().close();
+//        }
+
         Main.client.sendOverConnection(currentInput);
         userInput.setText("");
 
     }
 }
-
-
-        //create object
-//        Random rand = new Random();
-//        int myrand = rand.nextInt(50) + 1;
-
-        //print on Label
-      //  myMessage.setText(Integer.toString(myrand));
-
-        //print on console
-        //System.out.println(Integer.toString(myrand));
-
-
-
 
 
 
