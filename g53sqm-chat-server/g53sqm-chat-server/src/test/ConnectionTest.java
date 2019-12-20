@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
@@ -47,15 +49,27 @@ class ConnectionTest {
 		assertEquals("OK Welcome to the chat server, there are currently 1 user(s) online", msg);
 	}
 	
+	//test validateMessage() method
 	@Test
 	@Order(2)
-	public void testListCommand_WhenNoLogIns() throws IOException{
-		fail();
-//		String msg = sInput.readLine();
-//		assertEquals("BAD You have not logged in yet",msg);
+	public void should_NotifyError_When_InvalidCommand() throws IOException{
+		String input = "MSG"; //command length < 4
+		PrintWriter i = getPrintWriter();
+		sendCommand(input, i);
+		String msg = sInput.readLine();
+		assertEquals("BAD invalid command to server",msg);
 	}
 	
-	public void sendCommand() {
-		
+	public void sendCommand(String cmd, PrintWriter i) {
+		i.println(cmd);
+		i.flush();
+	}
+	
+	public PrintWriter getPrintWriter() throws IOException{
+		OutputStream os = socket.getOutputStream();
+        OutputStreamWriter osw = new OutputStreamWriter(os);
+        PrintWriter writer = new PrintWriter(osw);
+
+        return writer;
 	}
 }
