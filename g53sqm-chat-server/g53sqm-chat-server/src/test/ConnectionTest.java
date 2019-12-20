@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import g53sqm.chat.server.Connection;
 import g53sqm.chat.server.Server;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -26,27 +27,14 @@ class ConnectionTest {
 	private static Socket socket;
 	private static BufferedReader sInput;        // to read from the socket
     private static PrintWriter sOutput;        // to write on the socket
+    private static Server server = new Server(9000);
+    private static Connection c;
     
-<<<<<<< HEAD
-    static int timeout;
-=======
-    public void sendCommand(String cmd, PrintWriter i) {
-		i.println(cmd);
-		i.flush();
-	}
-	
-	public PrintWriter getPrintWriter() throws IOException{
-		OutputStream os = socket.getOutputStream();
-        OutputStreamWriter osw = new OutputStreamWriter(os);
-        PrintWriter writer = new PrintWriter(osw);
-
-        return writer;
-	}
->>>>>>> f7334c35793501299d157afdf768bf95173386b0
+    static int timeout = 100;
 	
 	@BeforeAll
-	public static void startSocket() throws IOException{
-		new Thread(() -> new Server(9000).startServer()).start();
+	public static void startServer() throws IOException{
+		new Thread(() -> server.startServer()).start();
 	}
 	
 	@BeforeEach
@@ -59,7 +47,8 @@ class ConnectionTest {
             sOutput = new PrintWriter(socket.getOutputStream(), true);
         } catch (Exception ec) {      // exception handler if it failed
             System.out.println("Error connecting to server:" + ec);
-        }	
+        }
+		c = new Connection(socket,server);
 	}
 	
 	@AfterEach
@@ -85,7 +74,6 @@ class ConnectionTest {
 		assertEquals("BAD invalid command to server",msg);
 	}
 	
-<<<<<<< HEAD
 	@Test
 	@Order(3)
 	public void testListMethod_WithoutRegisteredUser() throws IOException{
@@ -228,7 +216,51 @@ class ConnectionTest {
 		sOutput.println("QUIT");
 		
 	}
-=======
 	
->>>>>>> f7334c35793501299d157afdf768bf95173386b0
+	@Test
+	@Order(12)
+	public void testQuitMethod_UNREGISTERED() throws Exception {
+		sInput.readLine();
+		
+		sOutput.println("QUIT");
+		Thread.sleep(timeout);
+		
+		String msg = sInput.readLine();
+		assertEquals("OK goodbye",msg);
+	}
+	
+	@Test
+	@Order(13)
+	public void testQuitMethod_REGISTERED() throws Exception {
+		sInput.readLine();
+		
+		String username = "testUser";
+		sOutput.println("IDEN " + username);
+		Thread.sleep(timeout);
+		sInput.readLine();
+		
+		sOutput.println("QUIT");
+		Thread.sleep(timeout);
+		
+		String msg = sInput.readLine();
+		assertEquals("OK thank you for sending 0 message(s) with the chat service, goodbye. ", msg);
+	}
+	
+	@Test
+	@Order(14)
+	public void testGetState_UNREGISTERED() throws Exception{
+		int state = c.getState();
+		
+		assertTrue(state == 0);
+	}
+	
+	@Test
+	@Order(15)
+	public void testGetState_REGISTERED() throws Exception {
+		sOutput.println("IDEN Omer");
+
+		int state = c.getState();
+		
+		assertEquals(1,state);
+	}
 }
