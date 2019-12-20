@@ -1,86 +1,70 @@
 package test;
 
-import static org.junit.Assert.*;
-
-import java.io.ByteArrayOutputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintStream;
-import java.net.InetAddress;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
+
+
+import static org.junit.Assert.*;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import g53sqm.chat.server.Server;
 
 class ServerTest{
-	private static Server server;
-	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-	private ServerRunner runner;
-	private String sep = System.getProperty("line.separator");
-    private String initial = "Server has been initialised on port 9000" + sep;
-	Thread t;
-	//private static Server server = new Server(9015);
+	private Socket socket;
+	private BufferedReader sInput;        // to read from the socket
+    private static PrintWriter sOutput;        // to write on the socket
+	private String msg;
 	
-	@BeforeEach
-    public void initialize() throws IOException {
-        
-		//runner = new ServerRunner(9003);
-    }
-	
-	@AfterEach
-	public void end() throws IOException {
-       //runner.quitServer();
-    }
+    
+    public void startSocket() throws IOException{
+		//creating socket
+		try {
+            socket = new Socket("localhost", 9000);
 
-	@Test
-	public void should_NumberOfUsers_When_ListEmpty() throws IOException {
-		//server = new Server(9000);
-		//System.out.println("a");
-		//System.out.println(server.getNumberOfUsers());
-		// given
-		initialiseClient();
-		//initialiseAndSendMessage("IDEN " + input);
-		// when
-		//int userNumber = server.getNumberOfUsers();
-		// then
-		assertEquals(initial + "OK Welcome to the chat server, there are currelty 1 user(s) online", outContent.toString());
-		System.out.println("b");
+        } catch (Exception ec) {      // exception handler if it failed
+
+            String msg = "Error connecting to server:" + ec;
+            System.out.println(msg);
+        }
+		
+		//getting input and output data streams
+		try {
+            sInput = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            sOutput = new PrintWriter(socket.getOutputStream(), true);
+
+        } catch (IOException eIO) {
+            msg = "Error creating new I/O Streams: " + eIO;
+            System.out.println(msg);
+        }	
 	}
 	
-	private void initialiseClient() throws IOException {
-    String host = "localhost";
-    int port = 9000;
-    InetAddress address = InetAddress.getByName(host);
-    Socket socket = new Socket(address, port);
+//	@BeforeAll
+//	static void setUp(){
+//		server = new Server(9002);
+//		thread = new Thread();
+//		thread.start();
+//	}
 
-}
-
-
-class ServerRunner {
-
-    private final int port;
-
-    ServerRunner(int port) {
-        this.port = port;
-        server = new Server(port);
-    }
-
-//    @Override
-//    public void run() {
-//        System.setOut(new PrintStream(outContent));
-//        server = new Server(port);
-//    }
-
-//    public void quitServer() throws IOException {
-//        server.finalize();
-//    }
-
-    public Server getServer() {
-        return server;
-    }
-}
+	
+	@Test
+	void Should_ReturnFalse_When_UserDoesNotExist(){
+		//given
+		String input = "Kimberly";
+		//when
+		boolean existence  = doesUserExist(input);
+		//then
+		assertFalse(existence);
+		//fail("Not implemented yet");
+	}
 }
