@@ -10,10 +10,14 @@ import java.net.Socket;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import g53sqm.chat.server.Server;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ConnectionTest {
 	
 	private static Socket socket;
@@ -27,32 +31,28 @@ class ConnectionTest {
 		try {
 			Thread.sleep(100);
             socket = new Socket("localhost", 9000);
-
-        } catch (Exception ec) {      // exception handler if it failed
-            System.out.println("Error connecting to server:" + ec);
-        }
-		
-		//getting input and output data streams
-		try {
+            
             sInput = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             sOutput = new PrintWriter(socket.getOutputStream(), true);
-
-        } catch (IOException eIO) {
-            System.out.println("Error creating new I/O Streams: " + eIO);
+        } catch (Exception ec) {      // exception handler if it failed
+            System.out.println("Error connecting to server:" + ec);
         }	
 	}
 	
 	
 	@Test
+	@Order(1)
 	public void testFirstConnection() throws IOException{
 		String msg = sInput.readLine();
 		assertEquals("OK Welcome to the chat server, there are currently 1 user(s) online", msg);
 	}
 	
 	@Test
+	@Order(2)
 	public void testListCommand_WhenNoLogIns() throws IOException{
-		String msg = sInput.readLine();
-		assertEquals("BAD You have not logged in yet",msg);
+		fail();
+//		String msg = sInput.readLine();
+//		assertEquals("BAD You have not logged in yet",msg);
 	}
 	
 	public void sendCommand() {
