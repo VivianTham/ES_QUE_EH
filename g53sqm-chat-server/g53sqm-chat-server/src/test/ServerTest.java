@@ -3,6 +3,8 @@ package test;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
@@ -22,50 +24,57 @@ import g53sqm.chat.server.Server;
 
 class ServerTest{
 	
-	private Socket socket;
-	private BufferedReader sInput;        // to read from the socket
-    private static PrintWriter sOutput;        // to write on the socket
-	private String msg;
+	static int timeout = 100;
 	
+	private static Socket socket;
+	private static BufferedReader sInput;        // to read from the socket
+    private static PrintWriter sOutput;        // to write on the socket
+    private static Server server = new Server(9000);
     
-    public void startSocket() throws IOException{
+  
+	@BeforeAll
+	public static void startSocket() throws IOException{
+		
+		new Thread(() -> server.startServer()).start();
 		//creating socket
 		try {
+			Thread.sleep(100);
             socket = new Socket("localhost", 9000);
-
-        } catch (Exception ec) {      // exception handler if it failed
-
-            String msg = "Error connecting to server:" + ec;
-            System.out.println(msg);
-        }
-		
-		//getting input and output data streams
-		try {
+            
             sInput = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             sOutput = new PrintWriter(socket.getOutputStream(), true);
-
-        } catch (IOException eIO) {
-            msg = "Error creating new I/O Streams: " + eIO;
-            System.out.println(msg);
+        } catch (Exception ec) {      // exception handler if it failed
+            System.out.println("Error connecting to server:" + ec);
         }	
 	}
 	
-//	@BeforeAll
-//	static void setUp(){
-//		server = new Server(9002);
-//		thread = new Thread();
-//		thread.start();
-//	}
 
-	
 	@Test
 	void Should_ReturnFalse_When_UserDoesNotExist(){
 		//given
-//		String input = "Kimberly";
+		String input = "Kimberly";
 		//when
-//		boolean existence  = doesUserExist(input);
+		boolean existence  = server.doesUserExist(input);
 		//then
-//		assertFalse(existence);
-		//fail("Not implemented yet");
+		assertFalse(existence);
+	}
+	
+	@Test
+	void Should_ReturnTrue_When_UserDoesExist() throws Exception {
+		
+		assertFalse(server.doesUserExist("Omer"));
+		//given
+		//login user
+		String userName = "Omer";
+		sOutput.println("IDEN " + userName);
+		Thread.sleep(timeout);
+		
+		//when
+		boolean existence  = server.doesUserExist(userName);
+		//then
+		assertTrue(existence);
+		
+		sOutput.println("QUIT");
+		
 	}
 }

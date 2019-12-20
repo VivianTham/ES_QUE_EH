@@ -27,7 +27,22 @@ class ConnectionTest {
 	private static BufferedReader sInput;        // to read from the socket
     private static PrintWriter sOutput;        // to write on the socket
     
+<<<<<<< HEAD
     static int timeout;
+=======
+    public void sendCommand(String cmd, PrintWriter i) {
+		i.println(cmd);
+		i.flush();
+	}
+	
+	public PrintWriter getPrintWriter() throws IOException{
+		OutputStream os = socket.getOutputStream();
+        OutputStreamWriter osw = new OutputStreamWriter(os);
+        PrintWriter writer = new PrintWriter(osw);
+
+        return writer;
+	}
+>>>>>>> f7334c35793501299d157afdf768bf95173386b0
 	
 	@BeforeAll
 	public static void startSocket() throws IOException{
@@ -70,6 +85,7 @@ class ConnectionTest {
 		assertEquals("BAD invalid command to server",msg);
 	}
 	
+<<<<<<< HEAD
 	@Test
 	@Order(3)
 	public void testListMethod_WithoutRegisteredUser() throws IOException{
@@ -212,4 +228,7 @@ class ConnectionTest {
 		sOutput.println("QUIT");
 		
 	}
+=======
+	
+>>>>>>> f7334c35793501299d157afdf768bf95173386b0
 }
