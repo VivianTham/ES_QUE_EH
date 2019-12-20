@@ -25,6 +25,19 @@ class ConnectionTest {
 	private static Socket socket;
 	private static BufferedReader sInput;        // to read from the socket
     private static PrintWriter sOutput;        // to write on the socket
+    
+    public void sendCommand(String cmd, PrintWriter i) {
+		i.println(cmd);
+		i.flush();
+	}
+	
+	public PrintWriter getPrintWriter() throws IOException{
+		OutputStream os = socket.getOutputStream();
+        OutputStreamWriter osw = new OutputStreamWriter(os);
+        PrintWriter writer = new PrintWriter(osw);
+
+        return writer;
+	}
 	
 	@BeforeAll
 	public static void startSocket() throws IOException{
@@ -60,16 +73,5 @@ class ConnectionTest {
 		assertEquals("BAD invalid command to server",msg);
 	}
 	
-	public void sendCommand(String cmd, PrintWriter i) {
-		i.println(cmd);
-		i.flush();
-	}
 	
-	public PrintWriter getPrintWriter() throws IOException{
-		OutputStream os = socket.getOutputStream();
-        OutputStreamWriter osw = new OutputStreamWriter(os);
-        PrintWriter writer = new PrintWriter(osw);
-
-        return writer;
-	}
 }
