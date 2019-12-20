@@ -8,26 +8,28 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import g53sqm.chat.server.Server;
+
 class ConnectionTest {
 	
-	private Socket socket;
-	private BufferedReader sInput;        // to read from the socket
+	private static Socket socket;
+	private static BufferedReader sInput;        // to read from the socket
     private static PrintWriter sOutput;        // to write on the socket
-	private String msg;
 	
-	@BeforeEach
-	public void startSocket() throws IOException{
+	@BeforeAll
+	public static void startSocket() throws IOException{
+		new Thread(() -> new Server(9000).startServer()).start();
 		//creating socket
 		try {
+			Thread.sleep(100);
             socket = new Socket("localhost", 9000);
 
         } catch (Exception ec) {      // exception handler if it failed
-
-            String msg = "Error connecting to server:" + ec;
-            System.out.println(msg);
+            System.out.println("Error connecting to server:" + ec);
         }
 		
 		//getting input and output data streams
@@ -36,8 +38,7 @@ class ConnectionTest {
             sOutput = new PrintWriter(socket.getOutputStream(), true);
 
         } catch (IOException eIO) {
-            msg = "Error creating new I/O Streams: " + eIO;
-            System.out.println(msg);
+            System.out.println("Error creating new I/O Streams: " + eIO);
         }	
 	}
 	
@@ -50,7 +51,6 @@ class ConnectionTest {
 	
 	@Test
 	public void testListCommand_WhenNoLogIns() throws IOException{
-		
 		String msg = sInput.readLine();
 		assertEquals("BAD You have not logged in yet",msg);
 	}

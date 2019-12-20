@@ -21,19 +21,24 @@ public class Server {
 			e.printStackTrace();
 		}
 		list = new ArrayList<Connection>();
+	
+	}
+	public void startServer() {
 		
-				Connection c = null;
-				try {
-					c = new Connection(server.accept(), this);
-				}
-				catch (IOException e) {
-					System.err.println("error setting up new client conneciton");
-					e.printStackTrace();
-				}
-				Thread t = new Thread(c);
-				t.start();
-				list.add(c);
-
+		while(true) {
+			Connection c = null;
+			try {
+				c = new Connection(server.accept(), this);
+			}
+			catch (IOException e) {
+				System.err.println("error setting up new client conneciton");
+				e.printStackTrace();
+			}
+			Thread t = new Thread(c);
+			t.start();
+			list.add(c);
+		}
+		
 	}
 	
 	public ArrayList<String> getUserList() {

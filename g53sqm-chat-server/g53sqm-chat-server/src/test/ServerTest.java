@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import g53sqm.chat.server.Server;
 
 class ServerTest{
+	
 	private Socket socket;
 	private BufferedReader sInput;        // to read from the socket
     private static PrintWriter sOutput;        // to write on the socket
