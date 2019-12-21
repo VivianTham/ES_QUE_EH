@@ -8,6 +8,7 @@
 
 <AnchorPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
         <children>
+      <Button mnemonicParsing="false" onAction="#setUsername" prefHeight="25.0" prefWidth="160.0" text="Set Username" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
       <Text layoutX="636.0" layoutY="306.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To QUIT Connection : close this window " wrappingWidth="147.20005989074707" AnchorPane.rightAnchor="15.0" />
       <Text layoutX="631.0" layoutY="254.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To Private Message : username + message" wrappingWidth="147.20005989074707" AnchorPane.rightAnchor="15.0" />
       <Text layoutX="637.0" layoutY="177.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To see who is online :" wrappingWidth="147.2000507442408" AnchorPane.rightAnchor="15.0" />
@@ -21,7 +22,6 @@
       </Text>
       <Button fx:id="pmBtn" layoutX="399.0" layoutY="244.0" mnemonicParsing="false" onAction="#sendPrivateMsg" prefHeight="25.0" prefWidth="160.0" text="Private Message" AnchorPane.bottomAnchor="80.0" AnchorPane.rightAnchor="10.0" />
       <Button layoutX="672.0" layoutY="457.0" mnemonicParsing="false" onAction="#sendBroadcast" prefHeight="25.0" prefWidth="160.0" text="Broadcast to All" AnchorPane.bottomAnchor="45.0" AnchorPane.rightAnchor="10.0" />
-      <Button fx:id="pmBtn1" layoutX="630.0" layoutY="464.0" mnemonicParsing="false" onAction="#setUsername" prefHeight="25.0" prefWidth="160.0" text="Set Username" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
         <TextArea fx:id="messages_console" layoutX="14.0" prefHeight="383.0" prefWidth="607.0" AnchorPane.bottomAnchor="107.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="183.0" AnchorPane.topAnchor="10.0" />
         <TextArea fx:id="userInput" layoutX="10.0" layoutY="400.0" prefHeight="84.0" prefWidth="607.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="183.0" />
         </children>
