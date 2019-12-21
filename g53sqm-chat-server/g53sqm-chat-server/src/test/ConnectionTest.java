@@ -244,6 +244,122 @@ class ConnectionTest {
 		assertEquals("OK thank you for sending 0 message(s) with the chat service, goodbye. ", msg);
 	}
 	
+	@Test
+	@Order(14)
+	public void testUnrecognisableCommand() throws Exception{
+		sInput.readLine();
+		
+		String username = "testUser";
+		sOutput.println("IDEN " + username);
+		Thread.sleep(timeout);
+		sInput.readLine();
+		
+		String cmd = "TEST";
+		sOutput.println(cmd);
+		
+		String msg = sInput.readLine();
+		assertEquals("BAD command not recognised", msg);
+	}
+	
+	
+	@Test
+	@Order(15)
+	public void testUsernameTaken() throws Exception{
+		sInput.readLine();
+		
+		String username = "testUser";
+		sOutput.println("IDEN " + username);
+		Thread.sleep(timeout);
+		sInput.readLine();
+		
+		Socket socket1 = new Socket("localhost", 9000);
+        
+        BufferedReader sInput1 = new BufferedReader(new InputStreamReader(socket1.getInputStream()));
+        PrintWriter sOutput1 = new PrintWriter(socket1.getOutputStream(), true);
+		
+        sInput1.readLine();
+        
+		String username1 = "testUser";
+		sOutput1.println("IDEN " + username1);
+		Thread.sleep(timeout);
+		
+		String msg = sInput1.readLine();
+		assertEquals("BAD username is already taken", msg);
+		
+		sOutput1.println("QUIT");
+	}
+	
+	@Test
+	@Order(16)
+	public void testInvalidFormattedMsg() throws Exception {
+		sInput.readLine();
+		
+		String username = "testUser";
+		sOutput.println("IDEN " + username);
+		Thread.sleep(timeout);
+		sInput.readLine();
+		
+		sOutput.println("MESG Hello");
+		Thread.sleep(timeout);
+		
+		String msg = sInput.readLine();
+		assertEquals("BAD Your message is badly formatted", msg);
+	}
+	
+	@Test
+	@Order(17)
+	public void testMsgSentAndReceived() throws Exception {
+		sInput.readLine();
+		
+		String username = "testUser";
+		sOutput.println("IDEN " + username);
+		Thread.sleep(timeout);
+		sInput.readLine();
+		
+		Socket socket1 = new Socket("localhost", 9000);
+        
+        BufferedReader sInput1 = new BufferedReader(new InputStreamReader(socket1.getInputStream()));
+        PrintWriter sOutput1 = new PrintWriter(socket1.getOutputStream(), true);
+        
+        sInput1.readLine();
+        
+        String username1 = "testUser2";
+        sOutput1.println("IDEN " + username1);
+        Thread.sleep(timeout);
+        sInput1.readLine();
+        
+        String sentMsg = "Hello!";
+        sOutput.println("MESG testUser2 " + sentMsg);
+        Thread.sleep(timeout);
+        
+        String msg = sInput.readLine();
+        
+        String msg1 = sInput1.readLine();
+        
+        assertAll(
+        	() -> assertEquals("OK your message has been sent", msg),
+        	() -> assertEquals("PM from " + username + ":" + sentMsg, msg1)
+        		);
+		
+        sOutput1.println("QUIT");
+	}
+	
+	@Test
+	@Order(18)
+	public void testMesgSentToNonExistentUser() throws Exception{
+		sInput.readLine();
+		
+		String username = "testUser";
+		sOutput.println("IDEN " + username);
+		Thread.sleep(timeout);
+		sInput.readLine();
+		
+		String sentMsg = "Hello!";
+        sOutput.println("MESG testUser2 " + sentMsg);
+        
+        String msg = sInput.readLine();
+        assertEquals("BAD the user does not exist", msg);
+	}
 //	@Test
 //	@Order(14)
 //	public void testGetState_UNREGISTERED() throws Exception{
