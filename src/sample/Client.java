@@ -2,8 +2,6 @@ package sample;
 
 import java.net.*;
 import java.io.*;
-import java.util.*;
-
 
 public class Client {
 
@@ -56,14 +54,14 @@ public class Client {
         } catch (Exception ec) {      // exception handler if it failed
 
             msg = "Error connecting to server:" + ec;
-            allMsg.append(msg);
-            allMsg.append("\n");
+            Main.mainController.messages_console.setText(msg);
             System.out.println(msg);
             return false;
         }
 
         //reading input
         Main.mainController.userInput.requestFocus();
+
         msg = "Connection accepted " + socket.getInetAddress() + ":" + socket.getPort();
         allMsg.append(msg);
         allMsg.append("\n");
@@ -99,6 +97,9 @@ public class Client {
                     allMsg.append(msg);
                     allMsg.append("\n");
                     Main.mainController.messages_console.setText(allMsg.toString());
+                    //auto scrolling for new messages received
+                    Main.mainController.messages_console.selectPositionCaret(Main.mainController.messages_console.getLength());
+                    Main.mainController.messages_console.deselect();
 
                 } catch (IOException e) {
                     msg = "Server closed: " + e;
@@ -115,6 +116,7 @@ public class Client {
     //this method gets information from user, send to server and server will handle it
     public static void sendOverConnection(String msg) {
         //user's input is append to the end of previous one + a line break
+
         allMsg.append(msg);
         allMsg.append("\n");
 

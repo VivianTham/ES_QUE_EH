@@ -1,39 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<!--<AnchorPane prefHeight="290.0" prefWidth="390.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">-->
-<!--        <children>-->
-<!--        <Button fx:id="sendBtn" layoutX="324.0" layoutY="239.0" mnemonicParsing="false" onAction="#sendButton" text="SEND" />-->
-<!--        <TextArea fx:id="messages_console" layoutX="14.0" layoutY="14.0" prefHeight="198.0" prefWidth="362.0" />-->
-<!--        <TextField fx:id="userInput" layoutX="14.0" layoutY="226.0" onAction="#sendButton" prefHeight="50.0" prefWidth="302.0" />-->
-<!--        </children>-->
-<!--</AnchorPane>-->
-
-<BorderPane prefHeight="290.0" prefWidth="390.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
-    <right>
-        <Button fx:id="sendBtn" layoutX="324.0" layoutY="239.0" mnemonicParsing="false" onAction="#sendButton" text="SEND" BorderPane.alignment="BOTTOM_RIGHT">
-         <BorderPane.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="250.0" />
-         </BorderPane.margin>
-         <padding>
-            <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-         </padding></Button>
-    </right>
-    <bottom>
-        <TextArea fx:id="userInput" layoutX="14.0" layoutY="226.0" prefHeight="50.0" prefWidth="302.0">
-         <BorderPane.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="5.0" />
-         </BorderPane.margin>
-      </TextArea>
-    </bottom>
-   <center>
-        <TextArea fx:id="messages_console" prefHeight="198.0" prefWidth="362.0" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets bottom="5.0" left="10.0" top="10.0" />
-         </BorderPane.margin></TextArea>
-   </center>
-</BorderPane>
+<AnchorPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+        <children>
+      <Text layoutX="636.0" layoutY="306.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To QUIT Connection : close this window " wrappingWidth="147.20005989074707" AnchorPane.rightAnchor="15.0" />
+      <Text layoutX="631.0" layoutY="254.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To Private Message : username + message" wrappingWidth="147.20005989074707" AnchorPane.rightAnchor="15.0" />
+      <Text layoutX="637.0" layoutY="177.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To see who is online :" wrappingWidth="147.2000507442408" AnchorPane.rightAnchor="15.0" />
+      <Button layoutX="645.0" layoutY="189.0" mnemonicParsing="false" onAction="#sendList" prefHeight="15.0" prefWidth="119.0" text="LIST" AnchorPane.rightAnchor="35.0" />
+      <Text layoutX="631.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To check current status :" wrappingWidth="147.20004427433014" AnchorPane.rightAnchor="15.0" />
+      <Button layoutX="651.0" layoutY="117.0" mnemonicParsing="false" onAction="#sendStat" prefHeight="15.0" prefWidth="119.0" text="STAT" AnchorPane.rightAnchor="35.0" />
+      <Text layoutX="637.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Command" textAlignment="CENTER" wrappingWidth="139.38439178466797" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="30.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <Button fx:id="pmBtn" layoutX="399.0" layoutY="244.0" mnemonicParsing="false" onAction="#sendPrivateMsg" prefHeight="25.0" prefWidth="160.0" text="Private Message" AnchorPane.bottomAnchor="80.0" AnchorPane.rightAnchor="10.0" />
+      <Button layoutX="672.0" layoutY="457.0" mnemonicParsing="false" onAction="#sendBroadcast" prefHeight="25.0" prefWidth="160.0" text="Broadcast to All" AnchorPane.bottomAnchor="45.0" AnchorPane.rightAnchor="10.0" />
+      <Button fx:id="pmBtn1" layoutX="630.0" layoutY="464.0" mnemonicParsing="false" onAction="#setUsername" prefHeight="25.0" prefWidth="160.0" text="Set Username" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+        <TextArea fx:id="messages_console" layoutX="14.0" prefHeight="383.0" prefWidth="607.0" AnchorPane.bottomAnchor="107.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="183.0" AnchorPane.topAnchor="10.0" />
+        <TextArea fx:id="userInput" layoutX="10.0" layoutY="400.0" prefHeight="84.0" prefWidth="607.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="183.0" />
+        </children>
+</AnchorPane>
