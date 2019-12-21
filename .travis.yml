@@ -1,2 +1,9 @@
-language: java
-install: ant deps
+{
+  "os": [
+    "windows"
+  ],
+  "install": [
+    "ant deps"
+  ],
+  "language": "java"
+}
