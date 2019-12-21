@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import g53sqm.chat.server.Connection;
 import g53sqm.chat.server.Server;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -26,27 +27,13 @@ class ConnectionTest {
 	private static Socket socket;
 	private static BufferedReader sInput;        // to read from the socket
     private static PrintWriter sOutput;        // to write on the socket
+    private static Server server = new Server(9000);
     
-<<<<<<< HEAD
-    static int timeout;
-=======
-    public void sendCommand(String cmd, PrintWriter i) {
-		i.println(cmd);
-		i.flush();
-	}
-	
-	public PrintWriter getPrintWriter() throws IOException{
-		OutputStream os = socket.getOutputStream();
-        OutputStreamWriter osw = new OutputStreamWriter(os);
-        PrintWriter writer = new PrintWriter(osw);
-
-        return writer;
-	}
->>>>>>> f7334c35793501299d157afdf768bf95173386b0
+    static int timeout = 100;
 	
 	@BeforeAll
-	public static void startSocket() throws IOException{
-		new Thread(() -> new Server(9000).startServer()).start();
+	public static void startServer() throws IOException{
+		new Thread(() -> server.startServer()).start();
 	}
 	
 	@BeforeEach
@@ -59,7 +46,7 @@ class ConnectionTest {
             sOutput = new PrintWriter(socket.getOutputStream(), true);
         } catch (Exception ec) {      // exception handler if it failed
             System.out.println("Error connecting to server:" + ec);
-        }	
+        }
 	}
 	
 	@AfterEach
@@ -85,7 +72,6 @@ class ConnectionTest {
 		assertEquals("BAD invalid command to server",msg);
 	}
 	
-<<<<<<< HEAD
 	@Test
 	@Order(3)
 	public void testListMethod_WithoutRegisteredUser() throws IOException{
@@ -228,7 +214,167 @@ class ConnectionTest {
 		sOutput.println("QUIT");
 		
 	}
-=======
 	
->>>>>>> f7334c35793501299d157afdf768bf95173386b0
+	@Test
+	@Order(12)
+	public void testQuitMethod_UNREGISTERED() throws Exception {
+		sInput.readLine();
+		
+		sOutput.println("QUIT");
+		Thread.sleep(timeout);
+		
+		String msg = sInput.readLine();
+		assertEquals("OK goodbye",msg);
+	}
+	
+	@Test
+	@Order(13)
+	public void testQuitMethod_REGISTERED() throws Exception {
+		sInput.readLine();
+		
+		String username = "testUser";
+		sOutput.println("IDEN " + username);
+		Thread.sleep(timeout);
+		sInput.readLine();
+		
+		sOutput.println("QUIT");
+		Thread.sleep(timeout);
+		
+		String msg = sInput.readLine();
+		assertEquals("OK thank you for sending 0 message(s) with the chat service, goodbye. ", msg);
+	}
+	
+	@Test
+	@Order(14)
+	public void testUnrecognisableCommand() throws Exception{
+		sInput.readLine();
+		
+		String username = "testUser";
+		sOutput.println("IDEN " + username);
+		Thread.sleep(timeout);
+		sInput.readLine();
+		
+		String cmd = "TEST";
+		sOutput.println(cmd);
+		
+		String msg = sInput.readLine();
+		assertEquals("BAD command not recognised", msg);
+	}
+	
+	
+	@Test
+	@Order(15)
+	public void testUsernameTaken() throws Exception{
+		sInput.readLine();
+		
+		String username = "testUser";
+		sOutput.println("IDEN " + username);
+		Thread.sleep(timeout);
+		sInput.readLine();
+		
+		Socket socket1 = new Socket("localhost", 9000);
+        
+        BufferedReader sInput1 = new BufferedReader(new InputStreamReader(socket1.getInputStream()));
+        PrintWriter sOutput1 = new PrintWriter(socket1.getOutputStream(), true);
+		
+        sInput1.readLine();
+        
+		String username1 = "testUser";
+		sOutput1.println("IDEN " + username1);
+		Thread.sleep(timeout);
+		
+		String msg = sInput1.readLine();
+		assertEquals("BAD username is already taken", msg);
+		
+		sOutput1.println("QUIT");
+	}
+	
+	@Test
+	@Order(16)
+	public void testInvalidFormattedMsg() throws Exception {
+		sInput.readLine();
+		
+		String username = "testUser";
+		sOutput.println("IDEN " + username);
+		Thread.sleep(timeout);
+		sInput.readLine();
+		
+		sOutput.println("MESG Hello");
+		Thread.sleep(timeout);
+		
+		String msg = sInput.readLine();
+		assertEquals("BAD Your message is badly formatted", msg);
+	}
+	
+	@Test
+	@Order(17)
+	public void testMsgSentAndReceived() throws Exception {
+		sInput.readLine();
+		
+		String username = "testUser";
+		sOutput.println("IDEN " + username);
+		Thread.sleep(timeout);
+		sInput.readLine();
+		
+		Socket socket1 = new Socket("localhost", 9000);
+        
+        BufferedReader sInput1 = new BufferedReader(new InputStreamReader(socket1.getInputStream()));
+        PrintWriter sOutput1 = new PrintWriter(socket1.getOutputStream(), true);
+        
+        sInput1.readLine();
+        
+        String username1 = "testUser2";
+        sOutput1.println("IDEN " + username1);
+        Thread.sleep(timeout);
+        sInput1.readLine();
+        
+        String sentMsg = "Hello!";
+        sOutput.println("MESG testUser2 " + sentMsg);
+        Thread.sleep(timeout);
+        
+        String msg = sInput.readLine();
+        
+        String msg1 = sInput1.readLine();
+        
+        assertAll(
+        	() -> assertEquals("OK your message has been sent", msg),
+        	() -> assertEquals("PM from " + username + ":" + sentMsg, msg1)
+        		);
+		
+        sOutput1.println("QUIT");
+	}
+	
+	@Test
+	@Order(18)
+	public void testMesgSentToNonExistentUser() throws Exception{
+		sInput.readLine();
+		
+		String username = "testUser";
+		sOutput.println("IDEN " + username);
+		Thread.sleep(timeout);
+		sInput.readLine();
+		
+		String sentMsg = "Hello!";
+        sOutput.println("MESG testUser2 " + sentMsg);
+        
+        String msg = sInput.readLine();
+        assertEquals("BAD the user does not exist", msg);
+	}
+//	@Test
+//	@Order(14)
+//	public void testGetState_UNREGISTERED() throws Exception{
+//		int state = c.getState();
+//		
+//		assertTrue(state == 0);
+//	}
+//	
+//	@Test
+//	@Order(15)
+//	public void testGetState_REGISTERED() throws Exception {
+//		sOutput.println("IDEN Omer");
+//
+//		int state = c.getState();
+//		
+//		assertEquals(1,state);
+//	}
 }
