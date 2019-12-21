@@ -1,9 +1,5 @@
-{
-  "os": [
-    "windows"
-  ],
-  "install": [
-    "ant deps"
-  ],
-  "language": "java"
-}
+language: java
+jdk:
+  ~oraclejdk8
+script: ant build
+dist: trusty
