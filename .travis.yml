@@ -1,5 +1,2 @@
 language: java
-addons:
-  apt:
-    packages:
-      ant
+install: ant deps
