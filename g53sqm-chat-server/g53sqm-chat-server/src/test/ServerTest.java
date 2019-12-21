@@ -37,6 +37,12 @@ class ServerTest{
     private static PrintWriter sOutput;        // to write on the socket
     private static Server server = new Server(9000);
     
+
+	@BeforeAll
+	public static void startServer() throws IOException{
+		new Thread(() -> server.startServer()).start();
+	}
+	
     @BeforeEach
     public void initialiseClient() {
 		try {
@@ -50,16 +56,13 @@ class ServerTest{
         }	
 	}
     
-  
-	@BeforeAll
-	public static void startServer() throws IOException{
-		new Thread(() -> server.startServer()).start();
-	}
-	
+    
 	@AfterEach
 	public void stopClient() {
 		sOutput.println("QUIT");
 	}
+
+//Test cases for getUserList() method:
 	@Test
 	void Should_ReturnEmptyList_When_NoUserLoggedIn() {
 		//when
@@ -84,6 +87,7 @@ class ServerTest{
 	
 	}
 
+//Test cases for doesUserExist() method:
 	@Test
 	void Should_ReturnFalse_When_UserDoesNotExist(){
 		//given
@@ -108,14 +112,55 @@ class ServerTest{
 		boolean existence  = server.doesUserExist(userName);
 		//then
 		assertTrue(existence);
-		
-		sOutput.println("QUIT");
+	}
+	
+//Test cases for broadcastMessage() method:
+	@Test
+	void testBroadcastMessage() throws Exception {
+		sInput.readLine();
+		//given
+		String message = "Hello sexy :)";
+		//when
+		server.broadcastMessage(message);
+		//then
+		String broadcast = sInput.readLine();
+		assertEquals(message, broadcast);
 	}
 	
 
+	
+//Test cases for sendPrivateMessage() method:
+	@Test
+	void Should_ReturnTrue_When_() throws Exception {
+		//given
+		//message sender
+		String sender = "Anne Hathaway";
+		sOutput.println("IDEN " + sender);
+		Thread.sleep(timeout);
+		
+		//message receiver
+		Socket socket1 = new Socket("localhost", 9000);
+        
+        BufferedReader sInput1 = new BufferedReader(new InputStreamReader(socket1.getInputStream()));
+        PrintWriter sOutput1 = new PrintWriter(socket1.getOutputStream(), true);
+        
+		String message = "Wonderwoman is wonderful.";
+		String receiver = "Nathan";
+		sOutput1.println("IDEN " + receiver);
+		Thread.sleep(timeout);
+			
+		//when
+		boolean messageStatus = server.sendPrivateMessage(message, receiver);
+		//then
+		assertTrue(messageStatus);
+		
+		sOutput1.println("QUIT");
+	}
+	
+//Test cases for getNumberOfUsers() method:
 	@Test
 	void Should_ReturnNumberOfUsers_When_ListNotEmpty() throws Exception {
-		sInput.readLine();
+		
 		//given
 		//login user
 		String userName = "Omer";
@@ -127,7 +172,6 @@ class ServerTest{
 		
 		//then
 		assertEquals(1, userCount);
-		sOutput.println("QUIT");
 	}	
 	
 	
@@ -141,4 +185,5 @@ class ServerTest{
 		//then
 		assertEquals(1, userCount);
 	}	
+	
 }
