@@ -7,10 +7,12 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -21,11 +23,11 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 import g53sqm.chat.server.Server;
 
 import org.hamcrest.collection.IsEmptyCollection;
-import org.hamcrest.Matchers;
 import static org.hamcrest.CoreMatchers.*;
 
 class ServerTest{
@@ -131,19 +133,20 @@ class ServerTest{
 	
 //Test cases for sendPrivateMessage() method:
 	@Test
-	void Should_ReturnTrue_When_() throws Exception {
+	void Should_ReturnTrue_When_pmAnotherClient() throws Exception {
 		//given
-		//message sender
+		//login message sender
 		String sender = "Anne Hathaway";
 		sOutput.println("IDEN " + sender);
 		Thread.sleep(timeout);
 		
-		//message receiver
+		//intialise a new client
 		Socket socket1 = new Socket("localhost", 9000);
         
         BufferedReader sInput1 = new BufferedReader(new InputStreamReader(socket1.getInputStream()));
         PrintWriter sOutput1 = new PrintWriter(socket1.getOutputStream(), true);
         
+        //login message receiver
 		String message = "Wonderwoman is wonderful.";
 		String receiver = "Nathan";
 		sOutput1.println("IDEN " + receiver);
@@ -155,6 +158,23 @@ class ServerTest{
 		assertTrue(messageStatus);
 		
 		sOutput1.println("QUIT");
+	}
+	
+	@Test
+	void Should_ReturnFalse_When_pmUnintialisedClient() throws Exception {
+		//given
+		//login message sender
+		String sender = "Anne Hathaway";
+		sOutput.println("IDEN " + sender);
+		Thread.sleep(timeout);
+		
+		String message = "Batman is dreamy.";
+		String receiver = "Nathan";
+			
+		//when
+		boolean messageStatus = server.sendPrivateMessage(message, receiver);
+		//then
+		assertFalse(messageStatus);
 	}
 	
 //Test cases for getNumberOfUsers() method:
@@ -187,4 +207,27 @@ class ServerTest{
 	}	
 	
 
+	
+
+//	@Test
+//	void should_ThrowIOException_When_connectionError() throws Exception {
+//		server.finalize();
+//		//when 
+//		Executable executable = () -> server.startServer(); //lambda expression. An executable means it will not be executed immediately.
+//		
+//		//then
+//		assertThrows(IOException.class, executable);
+//		startServer();
+//	}
+	
+//	@Test
+//	void should_ThrowIOException_When_serverError(){
+//	
+//		//when 
+//		Executable executable = () -> new Server(9000); //lambda expression. An executable means it will not be executed immediately.
+//		
+//		//then
+//		assertThrows(IOException.class, executable);
+//	}
+	
 }
