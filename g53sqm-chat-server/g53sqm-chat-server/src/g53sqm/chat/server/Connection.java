@@ -21,7 +21,7 @@ public class Connection implements Runnable {
 	private PrintWriter out;
 	private String username;
 	
-	Connection (Socket client, Server serverReference) {
+	public Connection (Socket client, Server serverReference) {
 		this.serverReference = serverReference;
 		this.client = client;
 		this.state = STATE_UNREGISTERED;
