@@ -2,15 +2,13 @@ package sample;
 
 import java.net.*;
 import java.io.*;
-import java.util.*;
-
 
 public class Client {
 
     public static String display;
     private BufferedReader sInput;        // to read from the socket
     private static PrintWriter sOutput;        // to write on the socket
-    private Socket socket;                    // socket object
+    private static Socket socket;                    // socket object
     private String server;
     private int port;
     String msg;
@@ -34,6 +32,14 @@ public class Client {
         this.port = port;
     }
 
+    public static Socket getSocket(){
+        return socket;
+    }
+
+    public void setSocket(){
+        Client.socket = socket;
+    }
+
     Client(String server, int port) {
         this.server = server;
         this.port = port;
@@ -48,13 +54,14 @@ public class Client {
         } catch (Exception ec) {      // exception handler if it failed
 
             msg = "Error connecting to server:" + ec;
-            allMsg.append(msg);
-            allMsg.append("\n");
+            Main.mainController.messages_console.setText(msg);
             System.out.println(msg);
             return false;
         }
 
         //reading input
+        Main.mainController.userInput.requestFocus();
+
         msg = "Connection accepted " + socket.getInetAddress() + ":" + socket.getPort();
         allMsg.append(msg);
         allMsg.append("\n");
@@ -90,6 +97,9 @@ public class Client {
                     allMsg.append(msg);
                     allMsg.append("\n");
                     Main.mainController.messages_console.setText(allMsg.toString());
+                    //auto scrolling for new messages received
+                    Main.mainController.messages_console.selectPositionCaret(Main.mainController.messages_console.getLength());
+                    Main.mainController.messages_console.deselect();
 
                 } catch (IOException e) {
                     msg = "Server closed: " + e;
@@ -106,6 +116,7 @@ public class Client {
     //this method gets information from user, send to server and server will handle it
     public static void sendOverConnection(String msg) {
         //user's input is append to the end of previous one + a line break
+
         allMsg.append(msg);
         allMsg.append("\n");
 
@@ -113,4 +124,3 @@ public class Client {
     }
 
 }
-

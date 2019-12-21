@@ -1,18 +1,12 @@
 package sample;
 
-import com.sun.corba.se.spi.activation.Server;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import sun.util.logging.PlatformLogger;
 
 import java.util.Scanner;
 
@@ -49,6 +43,7 @@ public class Main extends Application {
         if (!client.start())
             return;
 
+        //closing client window quits the server connection
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
@@ -56,7 +51,6 @@ public class Main extends Application {
             }
         });
     }
-
 
     public static void main(String[] args) {
         launch(args);
