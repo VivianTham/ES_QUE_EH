@@ -89,10 +89,10 @@ public class Connection implements Runnable {
 	}
 	
 	private void stat() {
-		String status = "There are currently "+serverReference.getNumberOfUsers()+" user(s) on the server ";
+		String status = "There are currently "+serverReference.getNumberOfUsers()+" user(s) on the server\n";
 		switch(state) {
 			case STATE_REGISTERED:
-				status += "You are logged im and have sent " + messageCount + " message(s)";
+				status += "You are logged in and have sent " + messageCount + " message(s)";
 				break;
 			
 			case STATE_UNREGISTERED:
