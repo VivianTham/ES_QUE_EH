@@ -9,39 +9,39 @@ public class Client {
     private BufferedReader sInput;        // to read from the socket
     private static PrintWriter sOutput;        // to write on the socket
     private static Socket socket;                    // socket object
-    private String server;
+    private String serverAddress;
     private int port;
     String msg;
 
     //to use append, we use stringBuilder instead of string
-    public static StringBuilder allMsg = new StringBuilder("");
+    public StringBuilder allMsg = new StringBuilder("");
+//
+//    public String getServer() {
+//        return server;
+//    }
+//
+//    public void setServer(String server) {
+//        this.server = server;
+//    }
+//
+//    public int getPort() {
+//        return port;
+//    }
+//
+//    public void setPort(int port) {
+//        this.port = port;
+//    }
+//
+//    public static Socket getSocket(){
+//        return socket;
+//    }
+//
+//    public void setSocket(){
+//        Client.socket = socket;
+//    }
 
-    public String getServer() {
-        return server;
-    }
-
-    public void setServer(String server) {
-        this.server = server;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
-    }
-
-    public static Socket getSocket(){
-        return socket;
-    }
-
-    public void setSocket(){
-        Client.socket = socket;
-    }
-
-    Client(String server, int port) {
-        this.server = server;
+    public Client(String serverAddress, int port) {
+        this.serverAddress = serverAddress;
         this.port = port;
     }
 
@@ -49,7 +49,7 @@ public class Client {
     public boolean start() {
         // try to connect to the server
         try {
-            socket = new Socket(server, port);
+            socket = new Socket(serverAddress, port);
 
         } catch (Exception ec) {      // exception handler if it failed
 
@@ -58,8 +58,8 @@ public class Client {
             System.out.println(msg);
             return false;
         }
-
-        //reading input
+        
+        //adds cursor focus to the user input field
         Main.mainController.userInput.requestFocus();
 
         msg = "Connection accepted " + socket.getInetAddress() + ":" + socket.getPort();
@@ -114,7 +114,7 @@ public class Client {
     }
 
     //this method gets information from user, send to server and server will handle it
-    public static void sendOverConnection(String msg) {
+    public void sendOverConnection(String msg) {
         //user's input is append to the end of previous one + a line break
 
         allMsg.append(msg);
