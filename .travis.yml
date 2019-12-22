@@ -1,4 +1,12 @@
 language: java
+cache: yarn
 
-script: ant build
-dist: trusty
+install:
+  - yarn install
+script:
+  - yarn test
+  - yarn run build
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
